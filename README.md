@@ -2,6 +2,8 @@
 
 A modern React Router v7 template with a beautiful sidebar navigation and dark mode support.
 
+<img width="2014" height="1125" alt="image" src="https://github.com/user-attachments/assets/00942b1b-8bee-4a66-b81e-b869157e9c3b" />
+
 ## Features
 
 - **Beautiful Sidebar** - Collapsible navigation with shadcn/ui components
