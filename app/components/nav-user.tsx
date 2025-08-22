@@ -29,7 +29,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '~/components/ui/sidebar'
-import { ThemeToggle } from '~/components/theme-toggle'
+import { AnimatedThemeToggler } from '~/components/magicui/animated-theme-toggler'
 
 export function NavUser({
   user,
@@ -103,10 +103,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <div className="flex items-center justify-between px-2 py-1.5">
-              <span className="text-sm text-muted-foreground">Theme</span>
-              <ThemeToggle />
-            </div>
+            <DropdownMenuGroup>
+              <AnimatedThemeToggler />
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOut />
