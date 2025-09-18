@@ -1,21 +1,30 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { ThemeProvider } from '~/components/theme-provider'
-import '../../app/app.css'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanstackDevtools } from '@tanstack/react-devtools'
+import { ThemeProvider } from '@/components/theme-provider'
+import { NotFound } from '@/components/not-found'
+import '../App.css'
 
 export const Route = createRootRoute({
   component: () => (
     <ThemeProvider>
       <Outlet />
-      <TanStackRouterDevtools />
+      <TanstackDevtools
+        config={{
+          position: 'bottom-left',
+        }}
+        plugins={[
+          {
+            name: 'Tanstack Router',
+            render: <TanStackRouterDevtoolsPanel />,
+          },
+        ]}
+      />
     </ThemeProvider>
   ),
   notFoundComponent: () => (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-lg text-muted-foreground">Page not found</p>
-      </div>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <NotFound showSidebar={false} />
     </div>
   ),
 })

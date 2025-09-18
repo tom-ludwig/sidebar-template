@@ -6,12 +6,12 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '~/components/ui/breadcrumb'
-import { Separator } from '~/components/ui/separator'
+} from '@/components/ui/breadcrumb'
+import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
   SidebarTrigger,
-} from '~/components/ui/sidebar'
+} from '@/components/ui/sidebar'
 
 export const Route = createFileRoute('/_layout/dashboard')({
   component: DashboardPage,

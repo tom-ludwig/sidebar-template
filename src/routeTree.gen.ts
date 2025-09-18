@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LayoutRouteImport } from './routes/_layout'
-import { Route as R404RouteImport } from './routes/404'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutDocsRouteImport } from './routes/_layout/docs'
@@ -18,11 +17,6 @@ import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
 
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const R404Route = R404RouteImport.update({
-  id: '/404',
-  path: '/404',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutIndexRoute = LayoutIndexRouteImport.update({
@@ -47,14 +41,12 @@ const LayoutDashboardRoute = LayoutDashboardRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/404': typeof R404Route
   '/dashboard': typeof LayoutDashboardRoute
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
 }
 export interface FileRoutesByTo {
-  '/404': typeof R404Route
   '/dashboard': typeof LayoutDashboardRoute
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
@@ -62,7 +54,6 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/404': typeof R404Route
   '/_layout': typeof LayoutRouteWithChildren
   '/_layout/dashboard': typeof LayoutDashboardRoute
   '/_layout/docs': typeof LayoutDocsRoute
@@ -71,12 +62,11 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/404' | '/dashboard' | '/docs' | '/settings' | '/'
+  fullPaths: '/dashboard' | '/docs' | '/settings' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/404' | '/dashboard' | '/docs' | '/settings' | '/'
+  to: '/dashboard' | '/docs' | '/settings' | '/'
   id:
     | '__root__'
-    | '/404'
     | '/_layout'
     | '/_layout/dashboard'
     | '/_layout/docs'
@@ -85,7 +75,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  R404Route: typeof R404Route
   LayoutRoute: typeof LayoutRouteWithChildren
 }
 
@@ -96,13 +85,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof LayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/404': {
-      id: '/404'
-      path: '/404'
-      fullPath: '/404'
-      preLoaderRoute: typeof R404RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_layout/': {
@@ -154,7 +136,6 @@ const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  R404Route: R404Route,
   LayoutRoute: LayoutRouteWithChildren,
 }
 export const routeTree = rootRouteImport

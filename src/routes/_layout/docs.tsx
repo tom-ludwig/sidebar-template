@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { SidebarInset } from '~/components/ui/sidebar'
+import { SidebarInset } from '@/components/ui/sidebar'
 
 export const Route = createFileRoute('/_layout/docs')({
   component: DocsPage,
