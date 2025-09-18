@@ -1,6 +1,11 @@
-import { SidebarInset } from "~/components/ui/sidebar";
+import { createFileRoute } from '@tanstack/react-router'
+import { SidebarInset } from '~/components/ui/sidebar'
 
-export default function HomePage() {
+export const Route = createFileRoute('/_layout/')({
+  component: HomePage,
+})
+
+function HomePage() {
   return (
     <SidebarInset>
       <div className="flex flex-1 flex-col items-center justify-center p-4">
@@ -32,5 +37,5 @@ export default function HomePage() {
         </div>
       </div>
     </SidebarInset>
-  );
+  )
 }

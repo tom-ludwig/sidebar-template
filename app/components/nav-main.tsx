@@ -1,7 +1,7 @@
 "use client"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
-import { Link, useLocation } from "react-router"
+import { Link, useLocation } from "@tanstack/react-router"
 
 import {
   Collapsible,

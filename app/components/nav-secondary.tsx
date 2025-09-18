@@ -1,6 +1,6 @@
 import * as React from "react"
 import { type LucideIcon } from "lucide-react"
-import { Link } from "react-router"
+import { Link } from "@tanstack/react-router"
 
 import {
   SidebarGroup,

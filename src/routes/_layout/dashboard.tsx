@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,7 +13,11 @@ import {
   SidebarTrigger,
 } from '~/components/ui/sidebar'
 
-export default function DashboardPage() {
+export const Route = createFileRoute('/_layout/dashboard')({
+  component: DashboardPage,
+})
+
+function DashboardPage() {
   return (
     <SidebarInset>
       <header className="flex h-16 shrink-0 items-center gap-2">
