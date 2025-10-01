@@ -9,12 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as CallbackRouteImport } from './routes/callback'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutDocsRouteImport } from './routes/_layout/docs'
 import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CallbackRoute = CallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
@@ -41,12 +53,16 @@ const LayoutDashboardRoute = LayoutDashboardRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/callback': typeof CallbackRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof LayoutDashboardRoute
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
 }
 export interface FileRoutesByTo {
+  '/callback': typeof CallbackRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof LayoutDashboardRoute
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
@@ -55,6 +71,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_layout': typeof LayoutRouteWithChildren
+  '/callback': typeof CallbackRoute
+  '/login': typeof LoginRoute
   '/_layout/dashboard': typeof LayoutDashboardRoute
   '/_layout/docs': typeof LayoutDocsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
@@ -62,12 +80,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/dashboard' | '/docs' | '/settings' | '/'
+  fullPaths: '/callback' | '/login' | '/dashboard' | '/docs' | '/settings' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/dashboard' | '/docs' | '/settings' | '/'
+  to: '/callback' | '/login' | '/dashboard' | '/docs' | '/settings' | '/'
   id:
     | '__root__'
     | '/_layout'
+    | '/callback'
+    | '/login'
     | '/_layout/dashboard'
     | '/_layout/docs'
     | '/_layout/settings'
@@ -76,10 +96,26 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   LayoutRoute: typeof LayoutRouteWithChildren
+  CallbackRoute: typeof CallbackRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/callback': {
+      id: '/callback'
+      path: '/callback'
+      fullPath: '/callback'
+      preLoaderRoute: typeof CallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -137,6 +173,8 @@ const LayoutRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   LayoutRoute: LayoutRouteWithChildren,
+  CallbackRoute: CallbackRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
