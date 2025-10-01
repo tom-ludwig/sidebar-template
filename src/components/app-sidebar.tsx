@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   BookOpen,
   Bot,
@@ -10,12 +10,13 @@ import {
   Send,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+  CirclePlus,
+  Mail,
+} from "lucide-react";
 
-import { NavMain } from '@/components/nav-main'
-import { NavProjects } from '@/components/nav-projects'
-import { NavSecondary } from '@/components/nav-secondary'
-import { NavUser } from '@/components/nav-user'
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +25,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
 
 const data = {
   user: {
@@ -144,7 +146,146 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
+
+const navigationElements = {
+  navMain: [
+    {
+      title: "Home",
+      url: "/",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Overview",
+          url: "/",
+        },
+        {
+          title: "Getting Started",
+          url: "/getting-started",
+        },
+      ],
+    },
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: Bot,
+      items: [
+        {
+          title: "Analytics",
+          url: "/dashboard/analytics",
+        },
+        {
+          title: "Reports",
+          url: "/dashboard/reports",
+        },
+        {
+          title: "Settings",
+          url: "/dashboard/settings",
+        },
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "/docs",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Introduction",
+          url: "/docs/introduction",
+        },
+        {
+          title: "Get Started",
+          url: "/docs/getting-started",
+        },
+        {
+          title: "Tutorials",
+          url: "/docs/tutorials",
+        },
+        {
+          title: "Changelog",
+          url: "/docs/changelog",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: Settings2,
+      items: [
+        {
+          title: "General",
+          url: "/settings/general",
+        },
+        {
+          title: "Team",
+          url: "/settings/team",
+        },
+        {
+          title: "Billing",
+          url: "/settings/billing",
+        },
+        {
+          title: "Limits",
+          url: "/settings/limits",
+        },
+      ],
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Home",
+      url: "/",
+      icon: SquareTerminal,
+    },
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: Bot,
+      items: [
+        {
+          title: "Analytics",
+          url: "/dashboard/analytics",
+        },
+        {
+          title: "Reports",
+          url: "/dashboard/reports",
+        },
+        {
+          title: "Settings",
+          url: "/dashboard/settings",
+        },
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "/docs",
+      icon: BookOpen,
+    },
+    {
+      title: "Settings",
+      url: "/settings",
+      icon: Settings2,
+    },
+  ],
+  projects: [
+    {
+      name: "Design Engineering",
+      url: "/projects/design",
+      icon: Frame,
+    },
+    {
+      name: "Sales & Marketing",
+      url: "/projects/sales",
+      icon: PieChart,
+    },
+    {
+      name: "Travel",
+      url: "/projects/travel",
+      icon: Map,
+    },
+  ],
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -164,16 +305,34 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
+          <SidebarMenuItem className="flex items-center gap-2">
+            <SidebarMenuButton
+              tooltip="Quick Create"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+            >
+              <CirclePlus />
+              <span>Quick Create</span>
+            </SidebarMenuButton>
+            <Button
+              size="icon"
+              className="size-8 group-data-[collapsible=icon]:opacity-0"
+              variant="outline"
+            >
+              <Mail />
+              <span className="sr-only">Inbox</span>
+            </Button>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain title="Main" items={navigationElements.navMain} />
+        <NavMain title="Demos" items={navigationElements.navSecondary} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

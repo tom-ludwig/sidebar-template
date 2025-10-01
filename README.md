@@ -8,23 +8,36 @@ A modern tanstack router template with a beautiful sidebar navigation and dark m
 
 - **Beautiful Sidebar** - Collapsible navigation with shadcn/ui components
 - **Dark Mode** - Toggle between light, dark, and system themes
--  **Stack** - Built with tanstack router and Vite
-- **TypeScript** 
-- **Tailwind CSS** 
-- **Shadcn** 
+- **Stack** - Built with tanstack router and Vite
+- **TypeScript**
+- **Tailwind CSS**
+- **Shadcn**
 
 ## Quick Start
 
 ```bash
+cp .env.example .env # Set VITE_AUTH_BYPASS to true for local dev
 npm install
 npm run dev
 ```
 
 Visit `http://localhost:5173`
 
-## Adding Pages
+## Environment Variables
 
-See [ADDING_PAGES.md](./ADDING_PAGES.md) for detailed instructions on adding new pages and routes.
+| Variable                                | Example Value                    | Description                                                           |
+| --------------------------------------- | -------------------------------- | --------------------------------------------------------------------- |
+| `VITE_AUTH_BYPASS`                      | `true` / `false`                 | **Dev only**. If `true`, bypasses ZITADEL and logs in as a fake user. |
+| `VITE_ZITADEL_AUTHORITY`                | `https://issuer.zitadel.cloud`   | ZITADEL OIDC authority (your instance URL).                           |
+| `VITE_ZITADEL_CLIENT_ID`                | `1234567890abcdef`               | OAuth2 client ID configured in ZITADEL project.                       |
+| `VITE_ZITADEL_REDIRECT`                 | `http://localhost:5173/callback` | Redirect URL after login (must match your ZITADEL app config).        |
+| `VITE_ZITADEL_POST_LOGOUT_REDIRECT_URI` | `http://localhost:5173/`         | Post-logout redirect URL.                                             |
+
+## Authentication
+
+This project uses Zitadel for authentication.
+See `ZitadelConfig.md` for more information.
+For local development set `VITE_AUTH_BYPASS` to `true`.
 
 ## Tech Stack
 
