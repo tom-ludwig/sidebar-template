@@ -40,10 +40,10 @@ function LoginPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Button onClick={login} className="w-full" size="lg">
-            Sign in with ZITADEL
+            Sign in
           </Button>
           <p className="text-xs text-center text-muted-foreground">
-            Secure authentication powered by ZITADEL
+            Secure single sign-on authentication
           </p>
         </CardContent>
       </Card>

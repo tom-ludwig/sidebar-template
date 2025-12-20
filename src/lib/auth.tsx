@@ -6,8 +6,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { User, UserManager } from "oidc-client-ts";
-import { createZitadelAuth, type ZitadelConfig } from "@zitadel/react";
+import { User, UserManager, WebStorageStateStore } from "oidc-client-ts";
 
 type AuthContextType = {
   authenticated: boolean | null;
@@ -30,36 +29,33 @@ const fakeUser: User = {
     name: "Dev User",
     email: "dev@example.com",
     email_verified: true,
-    "urn:zitadel:iam:org:project:roles": ["admin"],
+    groups: ["admin"],
   },
   expires_at: Math.floor(Date.now() / 1000) + 3600,
 } as unknown as User;
 
-const VITE_ZITADEL_AUTHORITY =
-  import.meta.env.VITE_ZITADEL_AUTHORITY ||
-  "https://your-instance.zitadel.cloud";
-const ZITADEL_CLIENT_ID =
-  import.meta.env.VITE_ZITADEL_CLIENT_ID || "your-client-id";
-const ZITADEL_REDIRECT_URI =
-  import.meta.env.VITE_ZITADEL_REDIRECT_URI || "http://localhost:3000/callback";
-const ZITADEL_POST_LOGOUT_REDIRECT_URI =
-  import.meta.env.VITE_ZITADEL_POST_LOGOUT_REDIRECT_URI ||
+const OIDC_AUTHORITY =
+  import.meta.env.VITE_OIDC_AUTHORITY || "https://auth.example.com/application/o/your-app";
+const OIDC_CLIENT_ID =
+  import.meta.env.VITE_OIDC_CLIENT_ID || "your-client-id";
+const OIDC_REDIRECT_URI =
+  import.meta.env.VITE_OIDC_REDIRECT_URI || "http://localhost:3000/callback";
+const OIDC_POST_LOGOUT_REDIRECT_URI =
+  import.meta.env.VITE_OIDC_POST_LOGOUT_REDIRECT_URI ||
   "http://localhost:3000/";
 
-const zitadelConfig: ZitadelConfig = {
-  authority: VITE_ZITADEL_AUTHORITY,
-  client_id: ZITADEL_CLIENT_ID,
-  redirect_uri: ZITADEL_REDIRECT_URI,
-  post_logout_redirect_uri: ZITADEL_POST_LOGOUT_REDIRECT_URI,
+const userManager = new UserManager({
+  authority: OIDC_AUTHORITY,
+  client_id: OIDC_CLIENT_ID,
+  redirect_uri: OIDC_REDIRECT_URI,
+  post_logout_redirect_uri: OIDC_POST_LOGOUT_REDIRECT_URI,
   scope: "openid profile email",
   response_type: "code",
-  response_mode: "query", // PKCE is handled automatically by @zitadel/react
+  response_mode: "query",
   loadUserInfo: true,
-  monitorSession: true,
   automaticSilentRenew: true,
-};
-
-const zitadel = createZitadelAuth(zitadelConfig);
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
@@ -75,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const u = await zitadel.userManager.getUser();
+      const u = await userManager.getUser();
       if (u && !u.expired) {
         setAuthenticated(true);
         setUser(u);
@@ -94,10 +90,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refreshUser();
   }, []);
 
-  const login = () =>
-    AUTH_BYPASS ? setAuthenticated(true) : zitadel.authorize();
-  const logout = () =>
-    AUTH_BYPASS ? setAuthenticated(false) : zitadel.signout();
+  const login = () => {
+    if (AUTH_BYPASS) {
+      setAuthenticated(true);
+    } else {
+      userManager.signinRedirect();
+    }
+  };
+
+  const logout = () => {
+    if (AUTH_BYPASS) {
+      setAuthenticated(false);
+    } else {
+      userManager.signoutRedirect();
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -106,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         login,
         logout,
-        userManager: zitadel.userManager,
+        userManager,
         refreshUser,
       }}
     >
