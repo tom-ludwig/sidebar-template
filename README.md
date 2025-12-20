@@ -12,7 +12,7 @@ A modern tanstack router template with a beautiful sidebar navigation and dark m
 - **TypeScript**
 - **Tailwind CSS**
 - **Shadcn**
-- **OIDC Authentication** - Works with Authentik, Zitadel, Keycloak, etc. (optional)
+- **OIDC Authentication** - Works with Pocket ID, Zitadel, Keycloak, etc. (optional)
 
 ## Quick Start
 
@@ -34,7 +34,7 @@ npm install
 npm run dev
 ```
 
-See [AuthentikConfig.md](./AuthentikConfig.md) or [ZitadelConfig.md](./ZitadelConfig.md) for provider-specific setup.
+See [PocketIdConfig.md](./PocketIdConfig.md) or [ZitadelConfig.md](./ZitadelConfig.md) for provider-specific setup.
 
 ## Environment Variables
 
@@ -48,9 +48,9 @@ See [AuthentikConfig.md](./AuthentikConfig.md) or [ZitadelConfig.md](./ZitadelCo
 
 ## Authentication
 
-This project uses standard OIDC for authentication, compatible with providers like Authentik, Zitadel, Keycloak, etc.
+This project uses standard OIDC for authentication, compatible with providers like Pocket ID, Zitadel, Keycloak, etc.
 
-- See [AuthentikConfig.md](./AuthentikConfig.md) for Authentik setup
+- See [PocketIdConfig.md](./PocketIdConfig.md) for Pocket ID setup
 - See [ZitadelConfig.md](./ZitadelConfig.md) for Zitadel setup
 
 For local development, set `VITE_AUTH_BYPASS` to `true` to skip authentication.

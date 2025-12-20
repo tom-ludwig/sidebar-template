@@ -35,14 +35,14 @@ const fakeUser: User = {
 } as unknown as User;
 
 const OIDC_AUTHORITY =
-  import.meta.env.VITE_OIDC_AUTHORITY || "https://auth.example.com/application/o/your-app";
+  import.meta.env.VITE_OIDC_AUTHORITY || "http://localhost:1411";
 const OIDC_CLIENT_ID =
   import.meta.env.VITE_OIDC_CLIENT_ID || "your-client-id";
 const OIDC_REDIRECT_URI =
-  import.meta.env.VITE_OIDC_REDIRECT_URI || "http://localhost:3000/callback";
+  import.meta.env.VITE_OIDC_REDIRECT_URI || "http://localhost:5173/callback";
 const OIDC_POST_LOGOUT_REDIRECT_URI =
   import.meta.env.VITE_OIDC_POST_LOGOUT_REDIRECT_URI ||
-  "http://localhost:3000/";
+  "http://localhost:5173/";
 
 const userManager = new UserManager({
   authority: OIDC_AUTHORITY,
