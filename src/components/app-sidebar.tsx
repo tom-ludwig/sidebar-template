@@ -63,6 +63,10 @@ const data = {
           title: "Settings",
           url: "/dashboard/settings",
         },
+        {
+          title: "User API Test",
+          url: "/dashboards/user-api-test",
+        },
       ],
     },
     {
@@ -178,6 +182,10 @@ const navigationElements = {
           title: "Settings",
           url: "/dashboard/settings",
         },
+        {
+          title: "User API Test",
+          url: "/dashboards/user-api-test",
+        },
       ],
     },
     {
@@ -249,6 +257,10 @@ const navigationElements = {
         {
           title: "Settings",
           url: "/dashboard/settings",
+        },
+        {
+          title: "User API Test",
+          url: "/dashboards/user-api-test",
         },
       ],
     },

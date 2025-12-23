@@ -36,8 +36,7 @@ const fakeUser: User = {
 
 const OIDC_AUTHORITY =
   import.meta.env.VITE_OIDC_AUTHORITY || "http://localhost:1411";
-const OIDC_CLIENT_ID =
-  import.meta.env.VITE_OIDC_CLIENT_ID || "your-client-id";
+const OIDC_CLIENT_ID = import.meta.env.VITE_OIDC_CLIENT_ID || "your-client-id";
 const OIDC_REDIRECT_URI =
   import.meta.env.VITE_OIDC_REDIRECT_URI || "http://localhost:5173/callback";
 const OIDC_POST_LOGOUT_REDIRECT_URI =
@@ -129,3 +128,5 @@ export function useAuth() {
   }
   return ctx;
 }
+
+export { userManager };

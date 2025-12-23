@@ -16,6 +16,7 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
 import { Route as LayoutDocsRouteImport } from './routes/_layout/docs'
 import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
+import { Route as LayoutDashboardsUserApiTestRouteImport } from './routes/_layout/dashboards/user-api-test'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -51,6 +52,12 @@ const LayoutDashboardRoute = LayoutDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutDashboardsUserApiTestRoute =
+  LayoutDashboardsUserApiTestRouteImport.update({
+    id: '/dashboards/user-api-test',
+    path: '/dashboards/user-api-test',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/callback': typeof CallbackRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
+  '/dashboards/user-api-test': typeof LayoutDashboardsUserApiTestRoute
 }
 export interface FileRoutesByTo {
   '/callback': typeof CallbackRoute
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
   '/': typeof LayoutIndexRoute
+  '/dashboards/user-api-test': typeof LayoutDashboardsUserApiTestRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,12 +86,27 @@ export interface FileRoutesById {
   '/_layout/docs': typeof LayoutDocsRoute
   '/_layout/settings': typeof LayoutSettingsRoute
   '/_layout/': typeof LayoutIndexRoute
+  '/_layout/dashboards/user-api-test': typeof LayoutDashboardsUserApiTestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/callback' | '/login' | '/dashboard' | '/docs' | '/settings' | '/'
+  fullPaths:
+    | '/callback'
+    | '/login'
+    | '/dashboard'
+    | '/docs'
+    | '/settings'
+    | '/'
+    | '/dashboards/user-api-test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/callback' | '/login' | '/dashboard' | '/docs' | '/settings' | '/'
+  to:
+    | '/callback'
+    | '/login'
+    | '/dashboard'
+    | '/docs'
+    | '/settings'
+    | '/'
+    | '/dashboards/user-api-test'
   id:
     | '__root__'
     | '/_layout'
@@ -92,6 +116,7 @@ export interface FileRouteTypes {
     | '/_layout/docs'
     | '/_layout/settings'
     | '/_layout/'
+    | '/_layout/dashboards/user-api-test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -151,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutDashboardRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/dashboards/user-api-test': {
+      id: '/_layout/dashboards/user-api-test'
+      path: '/dashboards/user-api-test'
+      fullPath: '/dashboards/user-api-test'
+      preLoaderRoute: typeof LayoutDashboardsUserApiTestRouteImport
+      parentRoute: typeof LayoutRoute
+    }
   }
 }
 
@@ -159,6 +191,7 @@ interface LayoutRouteChildren {
   LayoutDocsRoute: typeof LayoutDocsRoute
   LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
+  LayoutDashboardsUserApiTestRoute: typeof LayoutDashboardsUserApiTestRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
@@ -166,6 +199,7 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutDocsRoute: LayoutDocsRoute,
   LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutIndexRoute: LayoutIndexRoute,
+  LayoutDashboardsUserApiTestRoute: LayoutDashboardsUserApiTestRoute,
 }
 
 const LayoutRouteWithChildren =
