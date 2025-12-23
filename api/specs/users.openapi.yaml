@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Users API
+  version: 1.0.0
+  description: User management endpoints.
+paths:
+  /user:
+    get:
+      operationId: getUser
+      tags:
+        - users
+      summary: Get user
+      parameters:
+        - in: query
+          name: user_id
+          required: true
+          description: The user ID to fetch
+          schema:
+            type: string
+      responses:
+        "200":
+          description: >-
+            The request was successful, and the server has returned the
+            requested resource in the response body.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      operationId: createUser
+      tags:
+        - users
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: The request was successful, and a new resource was created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        user_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      required:
+        - user_id
+        - first_name
+        - last_name
+        - email
+    UserCreate:
+      type: object
+      description: Data transfer object for creating a new User.
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      required:
+        - first_name
+        - last_name
+        - email
+  responses:
+    BadRequest:
+      description: >-
+        The server could not understand the request due to invalid syntax.
+        The client should modify the request and try again.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                    - message
+            required:
+              - message
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+    InternalServerError:
+      description: >-
+        The server encountered an unexpected condition that prevented it
+        from fulfilling the request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+tags:
+  - name: users
+    description: User management operations
+

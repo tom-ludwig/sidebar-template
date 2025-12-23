@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Health API
+  version: 1.0.0
+  description: Health check endpoints for Kubernetes probes and monitoring.
+paths:
+  /healthz:
+    get:
+      operationId: getHealthz
+      summary: Get Health
+      description: Returns a 200 status code.
+      tags:
+        - health
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /livez:
+    get:
+      operationId: getLivez
+      summary: Liveness Probe
+      description: >-
+        Kubernetes uses this to determine if your container needs to be restarted.
+        Should check if your application process is still running and responsive.
+      tags:
+        - health
+      responses:
+        "200":
+          description: Service is alive
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /readyz:
+    get:
+      operationId: getReadyz
+      summary: Readiness Probe
+      description: >-
+        Tells Kubernetes when your pod is ready to receive traffic.
+        Should verify dependencies are available (database connections, external APIs, etc.).
+        If this fails, Kubernetes removes the pod from service endpoints until it passes.
+      tags:
+        - health
+      responses:
+        "200":
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+        "503":
+          description: Service is not ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadinessFailure"
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ReadinessFailure:
+      type: object
+      properties:
+        successfullChecks:
+          type: array
+          items:
+            type: string
+        failedChecks:
+          type: array
+          items:
+            type: string
+      required:
+        - successfullChecks
+        - failedChecks
+tags:
+  - name: health
+    description: Health check endpoints
