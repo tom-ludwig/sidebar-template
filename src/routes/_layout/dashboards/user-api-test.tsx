@@ -19,13 +19,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useGetUser, useCreateUser } from "@api/generated/users/users/users";
+import { useGetUser, useCreateUser, useGetUsers } from "@api/generated/users/users/users";
 import {
   useGetHealthz,
   useGetLivez,
   useGetReadyz,
 } from "@api/generated/health/health/health";
-import { Activity, Heart, Zap, User, UserPlus, Search } from "lucide-react";
+import { Activity, Heart, Zap, User, UserPlus, Search, Users } from "lucide-react";
+import { UserDataTable } from "@/components/user-table/user-data-table";
 
 export const Route = createFileRoute("/_layout/dashboards/user-api-test")({
   component: UserApiTestPage,
@@ -34,6 +35,8 @@ export const Route = createFileRoute("/_layout/dashboards/user-api-test")({
 function UserApiTestPage() {
   const [searchUserId, setSearchUserId] = useState("");
   const [activeUserId, setActiveUserId] = useState<string | null>(null);
+  const [usersPage, setUsersPage] = useState(1);
+  const [usersLimit] = useState(10);
 
   // Form state for creating a new user
   const [newUser, setNewUser] = useState({
@@ -60,6 +63,17 @@ function UserApiTestPage() {
   // Create user mutation
   const createUser = useCreateUser();
 
+  // Get users with pagination
+  const {
+    data: usersData,
+    isLoading: isLoadingUsers,
+    error: usersError,
+    refetch: refetchUsers,
+  } = useGetUsers(
+    { page: usersPage, limit: usersLimit },
+    { query: { enabled: true } }
+  );
+
   const handleSearch = () => {
     if (searchUserId.trim()) {
       setActiveUserId(searchUserId.trim());
@@ -75,10 +89,16 @@ function UserApiTestPage() {
             setActiveUserId(createdUser.user_id);
             setSearchUserId(createdUser.user_id);
             setNewUser({ first_name: "", last_name: "", email: "" });
+            // Refresh users list to show the newly created user
+            refetchUsers();
           },
         }
       );
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setUsersPage(page);
   };
 
   return (
@@ -282,6 +302,44 @@ function UserApiTestPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Users List Card */}
+        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-500">
+                <Users className="h-5 w-5" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">All Users</CardTitle>
+                <CardDescription>
+                  Browse all users in the database with pagination
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {usersError ? (
+              <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
+                Error: {usersError.message || "Failed to load users"}
+              </div>
+            ) : (
+              <UserDataTable
+                data={usersData?.data || []}
+                pagination={
+                  usersData?.pagination || {
+                    total_records: 0,
+                    current_page: 1,
+                    total_pages: 1,
+                    limit: usersLimit,
+                  }
+                }
+                onPageChange={handlePageChange}
+                isLoading={isLoadingUsers}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
     </SidebarInset>
   );

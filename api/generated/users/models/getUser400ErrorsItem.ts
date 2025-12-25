@@ -6,6 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetUserParams = {
-user_id: string;
+export type GetUser400ErrorsItem = {
+  message: string;
 };

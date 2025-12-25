@@ -1,114 +1,262 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  title: Users API
+  title: Go Server Template
+  description: The Example API specs for my go server template.
   version: 1.0.0
-  description: User management endpoints.
+tags:
+  - name: users
 paths:
-  /user:
+  /users:
     get:
-      operationId: getUser
+      summary: Get users
+      deprecated: false
+      description: ''
       tags:
         - users
-      summary: Get user
       parameters:
-        - in: query
-          name: user_id
-          required: true
-          description: The user ID to fetch
+        - name: page
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+        - name: Accept
+          in: header
+          description: ''
+          required: false
+          example: application/json
           schema:
             type: string
       responses:
-        "200":
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+          headers: {}
+        '400':
+          $ref: '#/components/responses/Bad Request'
+          description: ''
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+          description: ''
+        '403':
+          $ref: '#/components/responses/Forbidden'
+          description: ''
+        '500':
+          $ref: '#/components/responses/Internal Server Error'
+          description: ''
+      security:
+        - JWT Auth: []
+  /user:
+    get:
+      summary: Get user
+      deprecated: false
+      description: ''
+      operationId: getUser
+      tags:
+        - users
+      parameters:
+        - name: user_id
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
           description: >-
             The request was successful, and the server has returned the
             requested resource in the response body.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "404":
-          $ref: "#/components/responses/NotFound"
+                $ref: '#/components/schemas/User'
+          headers: {}
+        '400':
+          description: 400 Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                        - message
+                required:
+                  - message
+          headers: {}
+        '404':
+          description: 404 not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+          headers: {}
+      security: []
     post:
+      summary: Create user
+      deprecated: false
+      description: ''
       operationId: createUser
       tags:
         - users
-      summary: Create user
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserCreate"
+              $ref: '#/components/schemas/UserCreate'
+        required: true
       responses:
-        "201":
+        '201':
           description: The request was successful, and a new resource was created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
+                $ref: '#/components/schemas/User'
+          headers: {}
+        '400':
+          description: >-
+            The server could not understand the request due to invalid syntax.
+            The client should modify the request and try again.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - message
+                      properties:
+                        message:
+                          type: string
+                  message:
+                    type: string
+          headers: {}
+        '500':
+          description: >-
+            The server encountered an unexpected condition that prevented it
+            from fulfilling the request. Report the issue to the support team if
+            it persists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+          headers: {}
+      security: []
 components:
   schemas:
+    UserListResponse:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/PaginationMetadata'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+      required:
+        - pagination
+        - data
     User:
       type: object
       properties:
+        last_name:
+          type: string
+        first_name:
+          type: string
         user_id:
           type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
         email:
           type: string
       required:
-        - user_id
-        - first_name
         - last_name
+        - first_name
+        - user_id
         - email
+      description: ''
     UserCreate:
       type: object
-      description: Data transfer object for creating a new User.
       properties:
-        first_name:
-          type: string
         last_name:
+          type: string
+        first_name:
           type: string
         email:
           type: string
       required:
-        - first_name
         - last_name
+        - first_name
         - email
+      description: Data transfer object for creating a new User.
+      x-fiddle-dto-info:
+        baseSchemaName: User
+    PaginationMetadata:
+      type: object
+      properties:
+        total_records:
+          type: integer
+        current_page:
+          type: integer
+        total_pages:
+          type: integer
+        limit:
+          type: integer
+        next_page:
+          type: integer
+        prev_page:
+          type: integer
+      required:
+        - total_records
+        - current_page
+        - total_pages
+        - limit
   responses:
-    BadRequest:
-      description: >-
-        The server could not understand the request due to invalid syntax.
-        The client should modify the request and try again.
+    Unauthorized:
+      description: ''
       content:
         application/json:
           schema:
+            title: ''
             type: object
             properties:
               message:
                 type: string
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                    - message
             required:
               - message
-    NotFound:
-      description: The requested resource was not found.
+    Forbidden:
+      description: ''
       content:
         application/json:
           schema:
@@ -118,10 +266,8 @@ components:
                 type: string
             required:
               - message
-    InternalServerError:
-      description: >-
-        The server encountered an unexpected condition that prevented it
-        from fulfilling the request.
+    Bad Request:
+      description: ''
       content:
         application/json:
           schema:
@@ -131,7 +277,22 @@ components:
                 type: string
             required:
               - message
-tags:
-  - name: users
-    description: User management operations
-
+    Internal Server Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            title: ''
+            type: object
+            properties:
+              message:
+                type: string
+            required:
+              - message
+  securitySchemes:
+    JWT Auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+servers: []
+security: []

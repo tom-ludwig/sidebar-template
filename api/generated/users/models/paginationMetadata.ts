@@ -6,6 +6,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetUserParams = {
-user_id: string;
-};
+export interface PaginationMetadata {
+  total_records: number;
+  current_page: number;
+  total_pages: number;
+  limit: number;
+  next_page?: number;
+  prev_page?: number;
+}

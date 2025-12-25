@@ -5,7 +5,9 @@
  * The Example API specs for my go server template.
  * OpenAPI spec version: 1.0.0
  */
+import type { CreateUser400ErrorsItem } from './createUser400ErrorsItem';
 
-export type GetUserParams = {
-user_id: string;
+export type CreateUser400 = {
+  errors?: CreateUser400ErrorsItem[];
+  message: string;
 };
