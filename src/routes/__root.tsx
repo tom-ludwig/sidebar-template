@@ -1,6 +1,6 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AuthProvider } from '@/lib/auth'
 import { NotFound } from '@/components/not-found'
@@ -13,7 +13,7 @@ export const Route = createRootRoute({
         <div className="h-screen w-screen overflow-hidden">
           <Outlet />
         </div>
-        <TanstackDevtools
+        <TanStackDevtools
           config={{
             position: 'bottom-left',
           }}

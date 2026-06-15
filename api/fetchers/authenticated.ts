@@ -12,7 +12,7 @@ export const authenticatedFetch = async <T>({
 }: {
   url: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  params?: Record<string, string>;
+  params?: Record<string, string | number | boolean | undefined>;
   data?: unknown;
   headers?: Record<string, string>;
   signal?: AbortSignal;
@@ -25,7 +25,9 @@ export const authenticatedFetch = async <T>({
     throw new Error("No authentication token");
   }
 
-  const searchParams = params ? `?${new URLSearchParams(params)}` : "";
+  const searchParams = params
+    ? `?${new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)]))}`
+    : "";
 
   const response = await fetch(`${BASE_URL}${url}${searchParams}`, {
     method,
