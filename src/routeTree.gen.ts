@@ -60,12 +60,12 @@ const LayoutDashboardsUserApiTestRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof LayoutIndexRoute
   '/callback': typeof CallbackRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof LayoutDashboardRoute
   '/docs': typeof LayoutDocsRoute
   '/settings': typeof LayoutSettingsRoute
-  '/': typeof LayoutIndexRoute
   '/dashboards/user-api-test': typeof LayoutDashboardsUserApiTestRoute
 }
 export interface FileRoutesByTo {
@@ -91,12 +91,12 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/callback'
     | '/login'
     | '/dashboard'
     | '/docs'
     | '/settings'
-    | '/'
     | '/dashboards/user-api-test'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -144,7 +144,7 @@ declare module '@tanstack/react-router' {
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
